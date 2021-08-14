@@ -22,16 +22,16 @@ class Manual(GameSprite):
     def update_l(self):
         key_list = key.get_pressed()
         if key_list[K_w] and self.rect.y > 0:
-            self.rect.x -= self.speed
-        if key_list[K_a] and self.rect.y < 700 - self.size1:
-            self.rect.x += self.speed
+            self.rect.y -= self.speed
+        if key_list[K_s] and self.rect.y < 700 - self.size1:
+            self.rect.y += self.speed
 
     def update_r(self):
         key_list = key.get_pressed()
         if key_list[K_DOWN] and self.rect.y < 700 - self.size1:
-            self.rect.x += self.speed
+            self.rect.y += self.speed
         if key_list[K_UP] and self.rect.y > 0:
-            self.rect.x -= self.speed
+            self.rect.y -= self.speed
 
 # Ball class
 class Ball(GameSprite):
@@ -41,7 +41,6 @@ class Ball(GameSprite):
 # creation
 window = display.set_mode((700, 500))
 display.set_caption("Poooooooooooonnnng")
-window.fill((199, 220, 255))
 
 paddle_l = Manual("racket.png", 50, 100, 30, 150, 3)
 paddle_r = Manual("racket.png", 620, 100, 30, 150, 3)
@@ -55,7 +54,7 @@ text = font.SysFont("Arial", 30)
 run = True
 finish = False
 
-FPS = 40
+FPS = 60
 clock = time.Clock()
 
 while run:
@@ -67,9 +66,15 @@ while run:
             menu = False 
 
     # blit things
+    window.fill((199, 220, 255))
+    
     paddle_l.reset()
     paddle_r.reset()
     ball.reset()
 
-    pygame.display.update()
+    if not finish:
+        paddle_l.update_l()
+        paddle_r.update_r()
+
+    display.update()
     clock.tick(FPS)
